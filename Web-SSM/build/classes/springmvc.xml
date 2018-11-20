@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- 扫描Controller -->
+	<context:component-scan base-package="com.zhiyou"/>
+	
+	<!-- 注解驱动 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!--  -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"/>	
+		<property name="suffix" value=".jsp"/>	
+	</bean>
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/userLogin.action"/>
+			<mvc:exclude-mapping path="/*Register.action"/>
+			<bean class="com.zhiyou.HandlerInterceptor.HandlerInterceptor1"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!--上傳文件  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 最大文件大小 -->
+		<property name="maxUploadSize" value="#{1024*1024}"></property>
+		<!-- 最大内存大小 -->
+		<property name="maxInMemorySize" value="4096"></property>
+	</bean>
+	
+</beans>
